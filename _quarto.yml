@@ -1,0 +1,22 @@
+project:
+  title: "metrics0001"
+  output-dir: docs
+  
+format: 
+  pdf:
+    toc: false
+    
+    documentclass: scrreprt
+    
+    mainfont: "Tw Cen MT"
+    
+    execute:
+      echo: true
+      eval: false
+      output: false
+      warning: false
+    
+    code-block-border-left: true
+    code-block-bg: "#bdbdbd"
+    highlight-style: gruvbox
+  

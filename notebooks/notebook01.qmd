@@ -1,0 +1,86 @@
+---
+title: "Econometría I"
+date: "09-14-2023"
+published-title: "Fecha"
+author:
+  - "Pablo Astudillo-Estevéz"
+  - "Elías José Mantilla"
+author-title: "Autores"
+toc: false
+lang: es
+highlight-style: gruvbox
+title-block-banner: true
+---
+
+### 1. Ejercicios a papel y lápiz
+
+- 1.1. Al resolver el problema de optimización para encontrar los estimadores de mínimos cuadrados ordinarios para la regresión simple, demuestra que el intercepto será 0 si centramos tanto $y$ como $x$.
+- 1.2. Demuestra que el modelo ajustado $\hat{y_{i}}=\hat{\beta_{0}} + \hat{\beta_{1}}x_{i} + \epsilon$ pasa por el punto $(\bar{x}, \bar{y})$
+- 1.3. Obtén las estimaciones para los parámetros $\beta$ según el método de momentos. Hint: el ejercicio es trabajado en Wooldridge (pp. 28)  y parte de utilizar dos supuestos sobre el proceso generador de los datos. A saber, que los errores tienen media cero, $E[\epsilon]=0$, y que los errores son ortogonales — independientes — al resto de variables incluidas en la regresión, $Cov(X, \epsilon)=0$. 
+- 1.4. Demuestra que el valor esperado de la función de media condicional (C.E.F) de $y$ es equivalente al valor esperado no condicional de $y$. Hint: considera una distribución bivariada conjunta para $x$ y $y$. Para una distribución tal existirá una modelo de probabilidad condicionada $p(y_{j}|x_{i})=p(x_{i}, y_{j})/p(x_{i})$.
+
+### 2. Ejercicios Computacionales
+
+- 2.0. Setup
+```{r}
+#| message: false
+#| warning: false
+#| code-summary: "Setup" 
+
+# Carga de librerías
+library(tidyverse)
+
+# Simulación de ventas
+n = 100
+a = 90
+b = 1.2
+sigma = 10
+
+
+sales <- tibble(
+  .p = round(
+    abs(rnorm(n = n, mean = 30, sd = 5)), 
+    digits = 2
+  ),
+  .q = a - b * .p + rnorm(n = n, mean = 0, sd = sigma)
+)
+```
+
+- 2.1. Haz una gráfico de dispersión — scatterplot — para evaluar visualmente la relación entre la cantidad de ventas y el precio.
+
+```{r}
+#| message: false
+#| warning: false
+
+
+
+```
+
+- 2.2. Estima los tres parámetros del modelo $cantidad=\beta_{0}+\beta_{1}precio$. Interpreta cada uno de ellos. 
+
+```{r}
+#| message: false
+#| warning: false
+
+# Tu respuesta
+```
+
+- 2.3. Redefine la variable independiente — precios — como desviaciones con respecto a su media. Estima los parámetros del modelo e interprétalos nuevamente.
+
+```{r}
+#| message: false
+#| warning: false
+
+# Tu respuesta
+```
+
+- 2.4. Toma los logaritmos tanto de la variable de precios como la de cantidades vendidas. Estima el modelo análogo con logaritmos. ¿Cúal es la nueva interpretación de los parámetros?
+
+```{r}
+#| message: false
+#| warning: false
+
+# Tu respuesta
+```
+
+- 2.5. ¿Cúal es el parámetro que deberíamos cambiar para alterar la dirección de la elasticidad?

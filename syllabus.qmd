@@ -1,0 +1,7 @@
+---
+title: "Econometría I"
+subtitle: "Curso introductorio a la Econometría"
+---
+
+## Curso de Econometría I
+
