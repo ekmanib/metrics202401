@@ -1,0 +1,128 @@
+---
+title: "Econometría I"
+subtitle: "Taller"
+date: "10-13-2023"
+published-title: "Fecha"
+author:
+  - "Pablo Astudillo-Estevéz"
+  - "Elías José Mantilla"
+author-title: "Autores"
+toc: false
+lang: es
+highlight-style: gruvbox
+title-block-banner: true
+---
+
+```{r setup, eval = TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+# load libs
+library(tidyverse)
+library(wooldridge)
+```
+
+## Sección I
+
+Usted cuenta con datos de los resultados de los exámenes parciales administrados para la clase de econometría I.
+
+```{r simulation, eval=TRUE, output=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+# params
+n <- 10
+true_ability <- rnorm(n, 50, 10)
+noise_1 <- rnorm(n, 0, 10)
+noise_2 <- rnorm(n, 0, 10)
+
+# sims
+df <- tibble(
+  id = seq(1, n),
+  midterm = true_ability + noise_1,
+  final = true_ability + noise_2
+)
+
+knitr::kable(df, caption="Resultados para 10 estudiantes de Econometría I")
+```
+
+1. Calcular, a mano, el coeficiente de correlación de Pearson. Sírvase de la definición del coeficiente de correlación: $$r_{xy}=cov(x, y)/\sigma_{x}\sigma_{y}=\frac{\sum (x_{i}-\bar{x})(y_{i}-\bar{y})}{\sqrt{\sum(x_{i}-\bar{x})^2}\sqrt{\sum(y_{i}-\bar{y})^2}}$$
+
+2. Calcular, a mano, los coeficientes del modelo de regresión lineal simple: $$final_{i}=\beta_{0}+\beta_{1}midterm_{i}+\epsilon_{i}$$
+Hint: Utilice el hecho estilizado de que $\hat{\beta}=r_{xy}\frac{\sigma_{y}}{\sigma_{x}}$.
+
+3. Este es un claro ejemplo del fenómeno conocido como regresión a la media o regresión a la mediocridad. ¿Explique en que consiste la regresión a la media y como está implicada en este ejemplo?
+
+{{< pagebreak >}}
+
+## Sección II
+
+Para cada uno de los modelos presentados a continuación, realice según sea requerido:
+
+1. Identifique, enliste e interprete cada uno de los parámetros estimados.
+
+**Determinantes del GPA**
+
+Se recopiló una muestra de `r format(nrow(gpa1), big.mark = ",")` estudiantes universitarios con el objetivo de estimar los parámetros de un modelo para predecir el GPA universitario en función del GPA de la escuela secundaria (hsGPA) y el puntaje del examen ACT (ACT) como predictores. La variable de interés, GPA, tiene como promedio `r format(mean(gpa1$colGPA), digits=2)` y sus valores están acotados en el rango [`r format(min(gpa1$colGPA))`,  `r format(max(gpa1$colGPA), digits=2)`]. El modelo estimado es presentado a continuación:
+
+```{r model gpa, eval=TRUE, output=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fit.1 <- lm(colGPA ~ hsGPA+ACT, data=gpa1) %>% 
+  arm::display(digits = 4)
+```
+
+**Salario por hora**
+
+Los parámetros del siguiente modelo fueron estimados con una base de datos de `r format(nrow(wage1), big.mark = ",")` individuos. El modelo busca predecir el logaritmo del salario por hora en función de la educación, la experiencia y la tenencia de la empresa. El modelo estimado es presentado a continuación:
+
+```{r model wage, eval=TRUE, output=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+lm(log(wage) ~ educ+exper+tenure, data=wage1) %>% 
+  arm::display(digits = 4)
+```
+
+
+```{r model nerlvoe, eval=TRUE, output=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+# load data
+nerlove_file <- paste0(
+  here::here(),
+  "/data/nerlove63.csv"
+  )
+
+nerlove <- read_csv(nerlove_file)
+
+
+# model
+# lm(log_totcost ~ log_output + log_plabor + log_pkap + log_pfuel, data = nerlove) %>% 
+#   arm::display(digits=4)
+```
+
+
+
+{{< pagebreak >}}
+
+## Sección III
+
+Considere el siguiente modelo de regresión lineal simple: $y_{i}=\beta x_{i}+\epsilon_{i}$. La muestras $(x_{i}, y_{i})$ pueden asumirse como idéntica e independientemente distribuidas (iid). Adicionalmente, se asume que $\epsilon_{i}\sim N(0,\sigma^{2})$; $\mathbb{E}[\epsilon|x]=0$; $\mathbb{V}[\epsilon|x]=\sigma^{2}$.
+
+1. Muestre que  $\hat{\beta}=\frac{\sum_{i=1}^{n}x_{i}y_{i}}{\sum_{i=1}^{n}x_{i}^{2}}$.
+
+2. Muestre que se trata de una estimador insesgado. $\mathbb{E}[\hat{\beta}|x]=\beta$.
+
+3. Encuentre la varianza del estimador $\hat{\beta}$.
+
+Demustre que:
+
+1. $\sum_{i}^{n} \hat{u}_{i}=0$
+
+2. $\sum_{i}^{n} x_{i}\hat{u}_{i}=0$
+
+{{< pagebreak >}}
+
+## Anexo
+Para referencia del ejercicio II, se debería llegar a valores iguales o similares a:
+
+```{r, output=TRUE, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+fit.anexo <- lm(final ~ midterm, data = df)
+
+df_ <- list(
+  "Intercepto" = coef(fit.anexo)[1],
+  "Pendiente" = coef(fit.anexo)[2],
+  "Corr. Pearson" = cor(df$midterm, df$final)
+) %>% 
+  as_tibble()
+
+knitr::kable(df_)
+```

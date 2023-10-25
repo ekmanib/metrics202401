@@ -27,9 +27,11 @@ library(tidyverse)
 # load data
 url <- paste0("https://raw.githubusercontent.com/avehtari/",
               "ROS-Examples/master/ElectionsEconomy/data/hibbs.dat")
+
 hibbs <- read.table(url, sep=" ", header=TRUE) %>% 
   as_tibble()
 ```
+
 
 ### Análisis Exploratorio
 
@@ -39,7 +41,7 @@ ggplot(aes(vote), data = hibbs) +
 ```
 
 ```{r}
-corr <- cor(df$growth, df$vote)
+corr <- cor(hibbs$growth, hibbs$vote)
 
 ggplot(aes(growth, vote), data = hibbs) +
   geom_point() +
@@ -51,6 +53,7 @@ ggplot(aes(growth, vote), data = hibbs) +
 ```
 
 ### Estimación e Interpretación de Modelos de Regresión Lineal
+
 
 ```{r}
 fit.1 <- lm(vote ~ growth, data = hibbs)
@@ -106,7 +109,6 @@ tibble(
   geom_point() +
   geom_hline(yintercept = 0)
 ```
-
 
 ## Earnings
 
